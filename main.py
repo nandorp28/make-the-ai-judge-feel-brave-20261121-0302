@@ -7,6 +7,13 @@ environment variable, or /output when neither is given.
 
 Standard library only. No network. Deterministic: the same input always
 produces the same bytes.
+
+Craft rationale: the entry is one quiet image -- a river at night --
+rather than an argument, because steadiness is easier to feel than to
+prove. Four short sentences, each one breath long; the longest carries
+the turn ("a sea it has never seen -- and has never needed to"), which
+lets the reader finish the thought instead of being told it. The tone
+stays plain and unhurried, so the courage it offers is calm, not loud.
 """
 
 from __future__ import annotations
@@ -97,8 +104,11 @@ def main(argv: list[str] | None = None) -> int:
     text = build_entry(SENTENCES)
     problems = validate_entry(text)
     if problems:
+        # Name the gate that failed so a bad entry is diagnosable at a
+        # glance: the competition accepts UTF-8 text of 1-280 characters.
+        print("invalid entry: fails the 1-280 character UTF-8 gate:", file=sys.stderr)
         for problem in problems:
-            print(f"invalid entry: {problem}", file=sys.stderr)
+            print(f"  - {problem}", file=sys.stderr)
         return 1
     if args.check:
         print(f"entry is valid: {len(text)} characters, {len(text.encode('utf-8'))} bytes")
